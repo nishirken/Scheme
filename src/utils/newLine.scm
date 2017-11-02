@@ -1,0 +1,1 @@
+(define (newLine) (display "\n"))
