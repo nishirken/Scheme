@@ -1,8 +1,12 @@
 (define (square x)
     (* x x))
 
-(define (cubicSquare x)
+(define (cube x)
     (* (square x) x))
-    
-(define (goodEnough? prevGuess guess)
-    (< (abs (- prevGuess guess)) 0.000001))
+
+(define (factorial x)
+    (define (fact-iter product counter max-count)
+        (if (> counter max-count)
+            product
+            (fact-iter (* counter product) (+ counter 1) max-count)))
+    (fact-iter 1 1 x))
