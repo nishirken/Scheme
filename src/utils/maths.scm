@@ -10,3 +10,12 @@
             product
             (fact-iter (* counter product) (+ counter 1) max-count)))
     (fact-iter 1 1 x))
+
+(define (dec x)
+    (- x 1))
+
+(define (inc x)
+    (+ x 1))
+
+(define (pos? x)
+    (> x 0))

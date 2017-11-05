@@ -22,7 +22,3 @@
 
 (define (sqrt x)
     (sqrtIter 0 1.0 x))
-
-(newLine)
-(display (sqrt 4.0))
-(newLine)
