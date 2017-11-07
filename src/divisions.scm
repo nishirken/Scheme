@@ -9,13 +9,16 @@
 (define (smallest-divisor n)
     (find-divisor n 2))
 
+(define (next x)
+    (if (= x 2)
+        3
+        (+ x 2)))
+
 (define (find-divisor n test-divisor)
     (cond
         ((> (square test-divisor) n) n)
         ((divides? test-divisor n) test-divisor)
-        (else (if (= n 2)
-            (find-divisor n (+ test-divisor 1))
-            (find-divisor n (+ test-divisor 2))))))
+        (else (find-divisor n (next test-divisor)))))
 
 (define (divides? a b)
     (= (remainder b a) 0))
@@ -39,7 +42,7 @@
 (define (search-next-primes limit)
     (define (search-iter current-number counter start-time)
         (cond
-            ((= counter 3) (display (- (runtime) start-time)))
+            ((= counter 3) (display (- (runtime-ms) start-time)))
             ((prime? current-number)
                 (begin
                     (display "Prime number: ")
@@ -47,6 +50,4 @@
                     (newline)
                     (search-iter (+ current-number 1) (+ counter 1) start-time)))
             (else (search-iter (+ current-number 1) counter start-time))))
-    (search-iter limit 0 (runtime)))
-
-(timed-prime-test 31)
+    (search-iter limit 0 (runtime-ms)))
