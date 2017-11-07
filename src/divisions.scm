@@ -26,6 +26,23 @@
 (define (prime? n)
     (= n (smallest-divisor n)))
 
+;fast prime
+(define (expmod base exp m)
+    (cond ((= exp 0) 1)
+        ((even? exp) (remainder (square (expmod base (/ exp 2) m)) m))
+        (else (remainder (* base (expmod base (- exp 1) m)) m))))
+
+(define (fermat-test n)
+    (define (try-it a)
+        (= (expmod a n n) a))
+    (try-it (+ 1 (random (- n 1)))))
+
+(define (fast-prime? n times)
+    (cond ((= times 0) true)
+        ((fermat-test n) (fast-prime? n (- times 1)))
+        (else false)))
+
+;report time
 (define (timed-prime-test n)
     (newline)
     (display n)
@@ -42,12 +59,14 @@
 (define (search-next-primes limit)
     (define (search-iter current-number counter start-time)
         (cond
-            ((= counter 3) (display (- (runtime-ms) start-time)))
-            ((prime? current-number)
+            ((= counter 3) (display (- (runtime) start-time)))
+            ((fast-prime? current-number 10)
                 (begin
                     (display "Prime number: ")
                     (display current-number)
                     (newline)
                     (search-iter (+ current-number 1) (+ counter 1) start-time)))
             (else (search-iter (+ current-number 1) counter start-time))))
-    (search-iter limit 0 (runtime-ms)))
+    (search-iter limit 0 (runtime)))
+
+(search-next-primes 10000000)
