@@ -68,5 +68,3 @@
                     (search-iter (+ current-number 1) (+ counter 1) start-time)))
             (else (search-iter (+ current-number 1) counter start-time))))
     (search-iter limit 0 (runtime)))
-
-(search-next-primes 10000000)
