@@ -19,3 +19,9 @@
 
 (define (pos? x)
     (> x 0))
+
+(define (neg? x)
+    (< 0 x))
+
+(define (average x y)
+    (/ (+ x y) 2))

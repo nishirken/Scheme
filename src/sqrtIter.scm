@@ -1,3 +1,5 @@
+(load "utils/maths.scm")
+
 (define (newIf predicate thenClause elseClause)
     (cond (predicate thenClause)
         (else elseClause)))
@@ -8,8 +10,6 @@
 (define (square x)
     (* x x))
 
-(define (average x y)
-    (/ (+ x y) 2))
 (define (improve guess x)
     (average guess (/ x guess)))
 (define (goodEnough? prevGuess guess)
