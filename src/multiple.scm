@@ -21,6 +21,6 @@
         ((pos? a) (+ (fast-multiple (halve (dec a)) (double b)) b))
         (else (- (fast-multiple (halve (inc a)) (double b)) b))))
 
-(print (remainder 13 7))
+; (print (remainder 13 7))
 
 
