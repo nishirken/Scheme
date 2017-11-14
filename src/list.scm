@@ -26,9 +26,9 @@
 (define (cc amount count-list kinds-of-coins)
     (cond
         ((= amount 0) 1)
-        ((or (< amount 0) (= kinds-of-coins 0)) 0)
+        ((or (< amount 0) (= kinds-of-coins (- 1))) 0)
         (else (+ (cc amount count-list
-                     (- kinds-of-coins 1))
+                     (dec kinds-of-coins))
                  (cc (- amount
                     (list-ref count-list kinds-of-coins)) count-list kinds-of-coins)))))
 
@@ -36,4 +36,4 @@
     (cc amount count-list (dec (length count-list))))
 
 (define us-coins (list 50 25 10 5 1))
-; (print (count-change 12 us-coins))
+; (print (count-change 100 us-coins))
