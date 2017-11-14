@@ -18,6 +18,4 @@
 (define (count-change amount)
     (cc amount 5))
 
-(newLine)
-(display (count-change 11))
-(newLine)
+; (display (count-change 11))
