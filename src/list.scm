@@ -39,12 +39,16 @@
 ; (print (count-change 100 us-coins))
 
 ; 2.20
-(define (filter items f)
+(define (not-null-execute items f)
     (if (null? items)
         '()
+        (f items)))
+
+(define (filter items f)
+    (not-null-execute items (lambda (x)
         (if (f (car items))
             (cons (car items) (filter (cdr items) f))
-            (filter (cdr items) f))))
+            (filter (cdr items) f)))))
         
 (define (same-parity . x)
     (let ((even-or-odd
@@ -53,4 +57,22 @@
             odd?)))
         (filter x (lambda (current-item) (even-or-odd current-item)))))
 
-; (print (same-parity 2 2 3 4 7 8 9 11))
+; (print (same-parity 1 2 3 4 7 8 9 11))
+
+; 2.21
+(define (map items f)
+    (not-null-execute items (lambda (x)
+        '()
+        (cons (f (car items))
+            (map (cdr items) f)))))
+
+(define (square-list items)
+    (if (null? items)
+        '()
+        (cons (square (car items))
+            (square-list (cdr items)))))
+
+(define (square-list-map items)
+    (map items square))
+
+; (print (square-list-map (list 1 2 3 4)))
