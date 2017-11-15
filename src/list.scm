@@ -39,20 +39,13 @@
 ; (print (count-change 100 us-coins))
 
 ; 2.20
-(define (filter list-instance f)
-    (let ((limit (dec (length list-instance))))
-        (define (iter counter result)
-            (let 
-                ((current-item (list-ref list-instance counter)))
-                (cond
-                    ((= counter limit)
-                        (if (f current-item)
-                            (append result (list current-item))
-                            result))
-                    ((f current-item) (iter (inc counter) (append result (list current-item))))
-                    (else (iter (inc counter) result)))))
-        (iter 0 (list))))
-
+(define (filter items f)
+    (if (null? items)
+        '()
+        (if (f (car items))
+            (cons (car items) (filter (cdr items) f))
+            (filter (cdr items) f))))
+        
 (define (same-parity . x)
     (let ((even-or-odd
         (if (even? (list-ref x 0))
@@ -60,4 +53,4 @@
             odd?)))
         (filter x (lambda (current-item) (even-or-odd current-item)))))
 
-; (print (same-parity 1 2 3 4 7 8 9 11))
+; (print (same-parity 2 2 3 4 7 8 9 11))
