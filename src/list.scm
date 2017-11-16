@@ -96,4 +96,14 @@
 
 ; (print (for-each (list 1 4 5) (lambda (item) (display item))))
 
-; TODO: reduce
+; reduce
+(define (reduce items f start-with-index)
+    (let ((limit (dec (length items))))
+        (define (iter counter items result)
+            (if (= counter limit)
+                result
+                (iter (inc counter) (cdr items)
+                    (f (car items) result))))
+            (iter start-with-index (list-tail items (inc start-with-index)) (list-ref items start-with-index))))
+
+; (print (reduce (list 13 2 8) (lambda (current result) (* current result)) 0))
