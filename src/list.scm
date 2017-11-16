@@ -76,3 +76,24 @@
     (map items square))
 
 ; (print (square-list-map (list 1 2 3 4)))
+
+; 2.22
+(define (square-list-iter items)
+    (define (iter things answer)
+        (if (null? things)
+            answer
+            (iter (cdr things)
+                (append answer (list (square (car things)))))))
+    (iter items (list)))
+
+; (print (square-list-iter (list 1 3 9 12)))
+
+; 2.23
+(define (for-each items f)
+    (not-null-execute items (lambda (items)
+        (begin (f (car items))
+        (for-each (cdr items) f)))))
+
+; (print (for-each (list 1 4 5) (lambda (item) (display item))))
+
+; TODO: reduce
