@@ -52,4 +52,15 @@
 ; (print (deep-reverse (list 1 (list 3 6 1) 6)))
 
 ; 2.28
+(define (atom? x)
+  (and (not (null? x))
+       (not (pair? x))))
 
+(define (fringe seq)
+    (cond
+        ((null? seq) '())
+        ((atom? seq) (list seq))
+        (else (append (fringe (car seq)) (fringe (cadr seq))))))
+
+; (print (cdr (list 2 3)))
+; (print (fringe (list (list 2 3) (list 2 3) (list 2 3) (list 4 1))))
