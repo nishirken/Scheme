@@ -9,14 +9,15 @@
 
 ; 1.42 compose
 (define (compose . fns)
-    (lambda args
-        (define (iter seq acc)
-            (if (null? seq)
-                acc
-                (iter (cdr seq) ((car seq) acc))))
-    (iter (cdr fns) (apply (car fns) args))))
+    (let ((reverse-fns (reverse fns)))
+        (lambda args
+            (define (iter seq acc)
+                (if (null? seq)
+                    acc
+                    (iter (cdr seq) ((car seq) acc))))
+    (iter (cdr reverse-fns) (apply (car reverse-fns) args)))))
 
-; (print ((compose square square inc square dec) 2))
+(print ((compose square inc) 6))
 
 ; 1.43 repeated
 (define (repeated f n)
