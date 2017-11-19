@@ -17,7 +17,7 @@
                     (iter (cdr seq) ((car seq) acc))))
     (iter (cdr reverse-fns) (apply (car reverse-fns) args)))))
 
-(print ((compose square inc) 6))
+; (print ((compose square inc) 6))
 
 ; 1.43 repeated
 (define (repeated f n)

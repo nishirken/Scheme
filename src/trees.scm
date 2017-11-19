@@ -44,12 +44,11 @@
 ; 2.27
 ; TODO
 (define (deep-reverse seq)
-    (cond
-        ((null? seq) '())
-        ((atom? seq) (list seq))
-        (else (append (compose deep-reverse reverse car seq) (compose deep-reverse reverse cdr seq)))))
+    (if (list? seq)
+        (map deep-reverse (reverse seq))
+        seq))
 
-(print (deep-reverse (list 7 3 4 6)))
+(print (deep-reverse (list 2 (list 3 1) (list 7 (list 2 5 6) 5 1))))
 
 ; 2.28
 (define (fringe seq)
@@ -58,4 +57,4 @@
         ((atom? seq) (list seq))
         (else (append (fringe (car seq)) (fringe (cdr seq))))))
 
-; (print (fringe (list (list 2 3) (list 2 3) 7 (list 1) 3 13)))
+; (print (fringe (list (list (list 1 2) 3) (list 2 3) 7 (list 1) 3 13)))
