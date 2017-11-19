@@ -1,5 +1,10 @@
 (load "utils/print.scm")
 (load "utils/maths.scm")
+(load "compose.scm")
+
+(define (atom? x)
+    (and (not (null? x))
+        (not (pair? x))))
 
 (define (count-leaves x)
     (cond
@@ -38,29 +43,19 @@
 
 ; 2.27
 ; TODO
-; (define (reverse list-instance)
-;     (let ((list-length (length list-instance)))
-;         (define (iter counter result)
-;             (if (= counter 0)
-;                 result
-;                 (iter (dec counter) (append result (list (list-ref list-instance (dec counter)))))))
-;         (iter list-length (list))))
+(define (deep-reverse seq)
+    (cond
+        ((null? seq) '())
+        ((atom? seq) (list seq))
+        (else (append (compose deep-reverse reverse car seq) (compose deep-reverse reverse cdr seq)))))
 
-; (define (deep-reverse seq)
-;     ())
-
-; (print (deep-reverse (list 1 (list 3 6 1) 6)))
+(print (deep-reverse (list 7 3 4 6)))
 
 ; 2.28
-(define (atom? x)
-  (and (not (null? x))
-       (not (pair? x))))
-
 (define (fringe seq)
     (cond
         ((null? seq) '())
         ((atom? seq) (list seq))
-        (else (append (fringe (car seq)) (fringe (cadr seq))))))
+        (else (append (fringe (car seq)) (fringe (cdr seq))))))
 
-; (print (cdr (list 2 3)))
-; (print (fringe (list (list 2 3) (list 2 3) (list 2 3) (list 4 1))))
+; (print (fringe (list (list 2 3) (list 2 3) 7 (list 1) 3 13)))
