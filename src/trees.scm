@@ -67,3 +67,12 @@
             (fn sub-tree))) tree))
 
 ; (print (tree-map square (list 1 2 (list 5 1) (list 3 7 (list 9 2)))))
+
+; 2.32
+(define (subsets set)
+    (if (null? set)
+        (list '())
+        (let ((rest (subsets (cdr set))))
+            (append rest (map (lambda (x) (cons (car set) x)) rest)))))
+
+; (print (subsets (list 1 2 3 4)))
