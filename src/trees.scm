@@ -48,7 +48,7 @@
         (map deep-reverse (reverse seq))
         seq))
 
-(print (deep-reverse (list 2 (list 3 1) (list 7 (list 2 5 6) 5 1))))
+; (print (deep-reverse (list 2 (list 3 1) (list 7 (list 2 5 6) 5 1))))
 
 ; 2.28
 (define (fringe seq)
@@ -58,3 +58,12 @@
         (else (append (fringe (car seq)) (fringe (cdr seq))))))
 
 ; (print (fringe (list (list (list 1 2) 3) (list 2 3) 7 (list 1) 3 13)))
+
+; 2.31
+(define (tree-map fn tree)
+    (map (lambda (sub-tree)
+        (if (list? sub-tree)
+            (tree-map fn sub-tree)
+            (fn sub-tree))) tree))
+
+; (print (tree-map square (list 1 2 (list 5 1) (list 3 7 (list 9 2)))))
