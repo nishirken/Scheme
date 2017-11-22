@@ -76,3 +76,41 @@
             (append rest (map (lambda (x) (cons (car set) x)) rest)))))
 
 ; (print (subsets (list 1 2 3 4)))
+
+; 2.33
+
+(define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+            (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+
+(define (map p sequence)
+    (accumulate (lambda (x y) (cons (p x) y)) '() sequence))
+
+; (print (map square (list 3 7 4)))
+
+
+(define (append seq1 seq2)
+    (accumulate cons seq2 seq1))
+
+; (print (append (list 3 1) (list 4 5)))
+
+(define (length sequence)
+    (accumulate (lambda (x y) (inc y)) 0 sequence))
+
+; (print (length (list 3 2 9 1 2)))
+
+; 2.34
+(define (horner-eval x coefficient-sequence)
+    (accumulate (lambda (this-coefficient accumulator)
+        (+ this-coefficient (* x accumulator)))
+        0
+        coefficient-sequence))
+
+; (print (horner-eval 2 (list 1 3 0 5 0 1)))
+
+; 2.35
+
+(define (count-leaves t)
+    (accumulate ⟨??⟩ ⟨??⟩ (map ⟨??⟩ ⟨??⟩)))
