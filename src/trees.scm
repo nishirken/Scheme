@@ -78,17 +78,16 @@
 ; (print (subsets (list 1 2 3 4)))
 
 ; 2.33
-
 (define (accumulate op initial sequence)
     (if (null? sequence)
         initial
             (op (car sequence)
             (accumulate op initial (cdr sequence)))))
 
-(define (map p sequence)
+(define (map-acc p sequence)
     (accumulate (lambda (x y) (cons (p x) y)) '() sequence))
 
-; (print (map square (list 3 7 4)))
+; (print (map-acc square (list 3 7 4)))
 
 
 (define (append seq1 seq2)
@@ -111,6 +110,45 @@
 ; (print (horner-eval 2 (list 1 3 0 5 0 1)))
 
 ; 2.35
+(define (count-leaves-map t)
+    (accumulate + 0
+        (map (lambda (x)
+            (if (list? x)
+                (count-leaves-map x)
+                1)) t)))
 
-(define (count-leaves t)
-    (accumulate ⟨??⟩ ⟨??⟩ (map ⟨??⟩ ⟨??⟩)))
+; (print (count-leaves-map (list 1 3 5 2 (list 5 2) (list 3 1) 2 3)))
+
+; 2.36
+(define (accumulate-n op init seqs)
+    (if (null? (car seqs))
+        '()
+        (cons (accumulate op init (map (lambda (sub-seq) (car sub-seq)) seqs))
+            (accumulate-n op init (map (lambda (sub-seq) (cdr sub-seq)) seqs)))))
+
+; (print (accumulate-n + 0 (list (list 1 2 3) (list 4 5 6) (list 7 8 9) (list 10 11 12))))
+
+; 2.37
+; | 1 2 3 4 |
+; | 4 5 6 6 |
+; | 6 7 8 9 |
+(define matrix
+    (list (list 1 2 3 4) (list 4 5 6 6) (list 6 7 8 9)))
+
+(define (dot-product v w)
+    (accumulate + 0 (map * v w)))
+
+; (print (dot-product (list 1 2 3) (list 1 2 3)))
+
+(define (matrix-*-vector matrix vector)
+    (map (lambda (row) (dot-product row vector)) matrix))
+
+; (print (matrix-*-vector (list (list 1 2) (list 3 5)) (list 1 3)))
+
+(define (transpose matrix)
+    (accumulate-n ⟨??⟩ ⟨??⟩ matrix))
+
+; | 1 
+; |
+; |
+(print (transpose matrix))
