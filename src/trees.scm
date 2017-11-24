@@ -42,7 +42,6 @@
 ; ((1 2 3) (4 5 6))
 
 ; 2.27
-; TODO
 (define (deep-reverse seq)
     (if (list? seq)
         (map deep-reverse (reverse seq))
@@ -145,10 +144,20 @@
 
 ; (print (matrix-*-vector (list (list 1 2) (list 3 5)) (list 1 3)))
 
+; | 1 4 6 |
+; | 2 5 7 |
+; | 3 6 8 |
+; | 4 6 9 |
 (define (transpose matrix)
-    (accumulate-n ⟨??⟩ ⟨??⟩ matrix))
+    (map reverse (accumulate-n (lambda (row acc) (append acc (list row))) (list) matrix)))
 
-; | 1 
-; |
-; |
-(print (transpose matrix))
+(define (transpose-map matrix)
+    (apply map list matrix))
+
+; (print (transpose matrix))
+; (print (transpose-map (list (list 1 2 3 4) (list 4 5 6 6))))
+
+
+(define (matrix-*-matrix m n)
+    (let ((cols (transpose n)))
+        (map ⟨??⟩ m)))
