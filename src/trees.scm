@@ -159,5 +159,7 @@
 
 
 (define (matrix-*-matrix m n)
-    (let ((cols (transpose n)))
-        (map ⟨??⟩ m)))
+    (let ((cols (transpose-map n)))
+        (map (lambda (row) (matrix-*-vector n row)) m)))
+
+; (print (matrix-*-matrix (list (list 1 2 3) (list 4 5 6)) (list (list 5 6) (list 3 6) (list 5 1))))
