@@ -1,2 +1,2 @@
-(define (print x)
-    (begin (newline) (display x) (newline)))
+(define (print . x)
+    (begin (newline) (for-each display x) (newline)))

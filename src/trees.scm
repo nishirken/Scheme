@@ -1,6 +1,7 @@
 (load "utils/print.scm")
 (load "utils/maths.scm")
 (load "compose.scm")
+(load "divisions.scm")
 
 (define (atom? x)
     (and (not (null? x))
@@ -163,3 +164,74 @@
         (map (lambda (row) (matrix-*-vector n row)) m)))
 
 ; (print (matrix-*-matrix (list (list 1 2 3) (list 4 5 6)) (list (list 5 6) (list 3 6) (list 5 1))))
+
+; 2.38
+(define (fold-left op initial sequence)
+    (define (iter result rest)
+        (if (null? rest)
+            result
+            (iter (op result (car rest)) (cdr rest))))
+    (iter initial sequence))
+
+; (print (fold-right / 1 (list 1 2 3)))
+; (print (fold-left / 1 (list 1 2 3)))
+; (print (fold-right list '() (list 1 2 3)))
+; (print (fold-left list '() (list 1 2 3)))
+
+
+; 2.39
+(define (reverse-right sequence)
+    (fold-right (lambda (x y) (append y (list x))) '() sequence))
+
+; (print (reverse-right (list 1 2 3 4)))
+
+(define (last sequence)
+    (if (null? (cdr sequence))
+        (car sequence)
+        (last (cdr sequence))))
+
+(define (reverse-left sequence)
+    (fold-left (lambda (x y) (append x (list y))) '() (reverse-right sequence)))
+
+; (print (reverse-left (list 1 2 3 4)))
+
+(define (flatmap proc seq)
+    (accumulate append '() (map proc seq)))
+
+(define (enumerate-interval low high)
+    (if (> low high)
+        '()
+        (cons low (enumerate-interval (inc low) high))))
+
+(define (prime-sum? pair)
+    (prime? (+ (car pair) (cadr pair))))
+
+(define (make-pair-sum pair)
+    (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
+
+; 2.40
+(define (unique-pairs n)
+    (flatmap (lambda (i)
+        (map (lambda (j)
+            (list i j)) (enumerate-interval 1 (dec i))))
+    (enumerate-interval 1 n)))
+
+; (print (unique-pairs 7))
+(define (prime-sum-pairs n)
+    (map make-pair-sum
+        (filter prime-sum? (unique-pairs n))))
+
+; (print (prime-sum-pairs 3))
+
+; 2.41
+(define (pair-sum pair)
+    (+ (car pair) (cadr pair)))
+
+(define (same-sum? pair s)
+    (= (pair-sum pair) s))
+
+(define (same-sum-pairs n s)
+    (map make-pair-sum
+        (filter (lambda (x) (same-sum? x s)) (unique-pairs n))))
+
+; (print (same-sum-pairs 9 6))
