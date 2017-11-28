@@ -40,3 +40,30 @@
 
 (define (intersection-set-multi set1 set2)
     (intersection-set-multi set1 set2))
+
+; 2.61
+(define (element-of-set-sort? x set)
+    (cond
+        ((null? set) #f)
+        ((= x (car set)) #t)
+        ((< x (car set)) #f)
+        (else (element-of-set-sort? x (cdr set)))))
+
+(define (intersection-set-sort set1 set2)
+    (if (or (null? set1) (null? set2))
+        '()
+        (let ((x1 (car set1)) (x2 (car set2)))
+            (cond
+                ((= x1 x2)
+                    (cons x1
+                        (intersection-set-sort (cdr set1)
+                            (cdr set2))))
+                ((< x1 x2)
+                    (intersection-set-sort (cdr set1) set2))
+                ((< x2 x1)
+                    (intersection-set-sort set1 (cdr set2)))))))
+    
+(define (adjoin-set-sort x set)
+    (if (element-of-set-sort?)
+        set
+        (cons x set)))
