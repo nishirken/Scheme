@@ -36,10 +36,10 @@
     (cons x set))
 
 (define (union-set-multi set1 set2)
-    (accumulate adjoin-set set2 set1))
+    (accumulate adjoin-set-multi set2 set1))
 
 (define (intersection-set-multi set1 set2)
-    (intersection-set-multi set1 set2))
+    (intersection-set set1 set2))
 
 ; 2.61
 (define (element-of-set-sort? x set)
@@ -67,3 +67,7 @@
     (if (element-of-set-sort?)
         set
         (cons x set)))
+
+; 2.62
+(define (union-set-sort set1 set2)
+    (accumulate adjoin-set-sort set2 set1)) ; (n/2 + n)
