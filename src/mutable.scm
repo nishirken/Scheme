@@ -120,3 +120,13 @@
 ; (print ((my-acc 'deposit 'new-pass) 30))
 
 ; 3.8
+(define (make-f)
+    (let ((current 0))
+        (lambda (number)
+            (let ((var current))
+                (set! current number) var))))
+
+(define f (make-f))
+
+(print (+ (f 1) (f 0)))
+
