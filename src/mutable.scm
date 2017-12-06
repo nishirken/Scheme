@@ -78,12 +78,15 @@
             "Недостаточно денег на счете"))
     (define (deposit amount)
         (set! balance (+ balance amount)) balance)
+    (define (change-password new-password)
+        (begin (set! initial-password new-password) new-password))
     (let ((invalid-password-counter 0))
         (lambda (m password)
             (cond
                 ((eq? password initial-password)
                     (begin (set! invalid-password-counter 0)
                         (cond
+                            ((eq? m 'new-password) (lambda (new-password) (change-password new-password)))
                             ((eq? m 'withdraw) withdraw)
                             ((eq? m 'deposit) deposit)
                             (else (error "Неизвестный вызов -- MAKE-ACCOUNT" m)))))
@@ -100,3 +103,20 @@
 ; (print ((acc-alert 'withdraw '1q) 20))
 ; (print ((acc-alert 'withdraw '1ee) 20))
 ; (print ((acc-alert 'withdraw '1a) 20))
+
+; 3.7
+(define my-acc
+    (make-protected-account-alert 200 'pass))
+
+(define (make-joint account old-password new-password)
+    (begin ((account 'new-password old-password) new-password)) account)
+
+(define peter-acc
+    (make-joint my-acc 'pass 'new-pass))
+
+; (print ((peter-acc 'withdraw 'new-pass) 20))
+; (print ((my-acc 'deposit 'new-pass) 20))
+; (print ((peter-acc 'withdraw 'new-pass) 30))
+; (print ((my-acc 'deposit 'new-pass) 30))
+
+; 3.8
