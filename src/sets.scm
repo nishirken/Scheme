@@ -22,6 +22,7 @@
 
 ; 2.59
 (define (union-set set1 set2)
+<<<<<<< HEAD
     (accumulate adjoin-set set2 set1))
 
 ; (print (union-set '(1 2 3) '(a b c)))
@@ -67,6 +68,9 @@
     (if (element-of-set-sort?)
         set
         (cons x set)))
+=======
+    (reduce (lambda (x y) (adjoin-set x y)) set1 set2))
+>>>>>>> e0c7c7753a0723c4d13efd38eaf6b9b7bdcc6e50
 
 ; 2.62
 (define (union-set-sort set1 set2)
