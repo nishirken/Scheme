@@ -128,5 +128,16 @@
 
 (define f (make-f))
 
-(print (+ (f 1) (f 0)))
+; (print (+ (f 1) (f 0)))
+
+(define (mystery x)
+    (define (loop x y)
+        (if (null? x)
+            y
+            (let ((temp (cdr x)))
+                (set-cdr! x y)
+                (loop temp x))))
+    (loop x '()))
+
+; (print (mystery '(a b c)))
 
