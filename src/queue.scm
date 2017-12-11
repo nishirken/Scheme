@@ -37,3 +37,18 @@
             (error "DELETE! вызвана с пустой очередью" queue))
         (else (set-front-ptr! queue (cdr (front-ptr queue)))
             queue)))
+
+(define (print-queue queue)
+    (let ((first (cdr (car queue))))
+        (if (null? first)
+            (display (cons (cdr queue)))
+            (display (cons (caar queue) (cdr queue))))))
+
+(define q1 (make-queue))
+
+(print-queue (insert-queue! q1 'a))
+(print q1)
+(print-queue (insert-queue! q1 'b))
+(print q1)
+;(print-queue (delete-queue! q1))
+;(print-queue (delete-queue! q1))
