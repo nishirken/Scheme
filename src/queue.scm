@@ -38,17 +38,49 @@
         (else (set-front-ptr! queue (cdr (front-ptr queue)))
             queue)))
 
+; 3.21
 (define (print-queue queue)
-    (let ((first (cdr (car queue))))
-        (if (null? first)
-            (display (cons (cdr queue)))
-            (display (cons (caar queue) (cdr queue))))))
+    (print (car queue)))
 
 (define q1 (make-queue))
 
-(print-queue (insert-queue! q1 'a))
-(print q1)
-(print-queue (insert-queue! q1 'b))
-(print q1)
-;(print-queue (delete-queue! q1))
-;(print-queue (delete-queue! q1))
+; (print-queue (insert-queue! q1 'a))
+; (print-queue (insert-queue! q1 'b))
+; (print-queue (delete-queue! q1))
+; (print-queue (delete-queue! q1))
+
+; 3.22
+(define make-queue-object
+    (let
+        ((_queue (cons '() '())))
+            (let 
+                ((_front-ptr (lambda () (car _queue)))
+                (_rear-ptr (lambda () (cdr _queue)))
+                (_set-front-ptr! (lambda (item) (set-car! _queue item)))
+                (_set-rear-ptr! (lambda (item) (set-cdr! _queue item))))
+                (let
+                    ((_empty-queue? (lambda () (null? (_front-ptr _queue)))))
+                    (let
+                        ((_insert-queue! item
+                            (let ((new-pair (cons item '())))
+                                (cond
+                                    ((_empty-queue?)
+                                        (_set-front-ptr! new-pair) (_set-rear-ptr! new-pair) _queue)
+                                    (else (set-cdr! (_rear-ptr) new-pair)
+                                        (_set-rear-ptr! new-pair) _queue)))))
+                        (_delete-queue! (lambda ()
+                            (cond
+                                ((_empty-queue?) (error "DELETE! вызвана с пустой очередью" _queue))
+                                (else (_set-front-ptr! (cdr (_front-ptr))) _queue)))))
+                    (define (dispatch m)
+                        (cond
+                            ((eq? m 'front-ptr) _front-ptr)
+                            ((eq? m 'rear-ptr) _rear-ptr)
+                            ((eq? m 'insert-queue!) _insert-queue!)
+                            ((eq? m 'delete-queue!) _delete-queue!)))
+                    dispatch)))))
+
+(define q1 make-queue-object)
+(define q2 make-queue-object)
+(print ((q1 'insert-queue!) 'a))
+(print (q2 'insert-queue!))
