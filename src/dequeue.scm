@@ -24,17 +24,33 @@
         (cond
             ((empty-deque? deque)
                 (set-front-ptr! deque new-pair) (set-rear-ptr! deque new-pair) deque)
+            (else (set-front-ptr! deque (cons item (front-ptr deque))) deque))))
+
+(define (rear-insert-deque! deque item)
+    (let ((new-pair (cons item '())))
+        (cond
+            ((empty-deque? deque)
+                (set-front-ptr! deque new-pair) (set-rear-ptr! deque new-pair) deque)
         (else (set-cdr! (rear-ptr deque) new-pair)
             (set-rear-ptr! deque new-pair) deque))))
 
-(define (rear-insert-deque!)
-    ())
+(define (front-delete-deque! deque)
+    (cond
+        ((empty-deque? deque)
+            (error "DELETE! вызвана с пустой очередью" deque))
+        (else (set-front-ptr! deque (cdr (front-ptr deque)))
+            deque)))
 
-(define (front-delete-deque!)
-    ())
+; TODO
+(define (rear-delete-deque! deque)
+    (cond
+        ((empty-deque? deque)
+            (error "DELETE! вызвана с пустой очередью" deque))
+        (else (set-front-ptr! deque (cdr (front-ptr deque)))
+            deque)))
 
-(define (rear-delete-deque!)
-    ())
+(define (print-deque deque)
+    (print (car deque)))
 
 (define deque (make-deque))
-(print (empty-deque? deque))
+(print deque)
