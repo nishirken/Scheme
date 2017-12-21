@@ -22,8 +22,8 @@
         (let
             ((new-value (logical-not (get-signal input))))
             (after-delay inverter-delay
-                   (lambda ()
-                     (set-signal! output new-value)))))
+                (lambda ()
+                    (set-signal! output new-value)))))
     (add-action! input invert-input)
     'ok)
 
@@ -81,3 +81,10 @@
         (and-gate f g c) 
         (inverter c output) 
         'ok))
+
+; 3.30
+(define (ripple-carry-adder A B S c)
+    (if (null? S)
+        'ok
+        ((full-adder (car A) (car B) c (car S) c)
+    (ripple-carry-adder (cdr A) (cdr B) (cdr S) c))))
