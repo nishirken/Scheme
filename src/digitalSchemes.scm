@@ -66,3 +66,18 @@
                         (set-signal! output new-value)))))
     (add-action! a1 or-action-procedure)
     (add-action! a2 or-action-procedure) 'ok)
+
+; 3.29
+(define (or-gate-v2 a1 a2 output) 
+    (let ((c (make-wire)) 
+          (d (make-wire))
+          (e (make-wire)) 
+          (f (make-wire)
+          (g (make-wire)))) 
+        (and-gate a1 a1 d) 
+        (and-gate a2 a2 e) 
+        (inverter d f) 
+        (inverter e g) 
+        (and-gate f g c) 
+        (inverter c output) 
+        'ok))
