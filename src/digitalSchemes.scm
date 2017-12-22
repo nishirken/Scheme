@@ -72,3 +72,9 @@
                         (set-signal! output new-value)))))
     (add-action! a1 and-action-procedure)
     (add-action! a2 and-action-procedure) 'ok)
+
+(define (after-delay delay action)
+    (add-to-agenda!
+        (+ delay (current-time the-agenda))
+        action
+        the-agenda))
