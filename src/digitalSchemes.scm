@@ -54,8 +54,8 @@
         (let
             ((new-value (logical-not (get-signal input))))
             (after-delay inverter-delay
-                   (lambda ()
-                     (set-signal! output new-value)))))
+                (lambda ()
+                    (set-signal! output new-value)))))
     (add-action! input invert-input)
     'ok)
 
@@ -72,6 +72,54 @@
                         (set-signal! output new-value)))))
     (add-action! a1 and-action-procedure)
     (add-action! a2 and-action-procedure) 'ok)
+
+; 3.28
+(define (logical-and x y)
+    (cond
+        (or (and (= x 0) (= y 0))
+            (and (= x 0) (= y 1))
+            (and (= x 1) (= y 0)) 0)
+        ((and (= x 1) (= y 1)) 1)
+        (else (error "Неправильный сигнал") '(x y))))
+
+(define (logical-or x y)
+    (cond
+        (or (and (= x 1) (= y 1))
+            (and (= x 0) (= y 1))
+            (and (= x 1) (= y 0)) 0)
+        ((and (= x 0) (= y 0)) 0)
+        (else (error "Неправильный сигнал") '(x y))))
+
+(define (or-gate a1 a2 output)
+    (define (or-action-procedure)
+        (let ((new-value (logical-or (get-signal a1) (get-signal a2))))
+            (after-delay or-gate-delay
+                    (lambda ()
+                        (set-signal! output new-value)))))
+    (add-action! a1 or-action-procedure)
+    (add-action! a2 or-action-procedure) 'ok)
+
+; 3.29
+(define (or-gate-v2 a1 a2 output) 
+    (let ((c (make-wire)) 
+          (d (make-wire))
+          (e (make-wire)) 
+          (f (make-wire)
+          (g (make-wire)))) 
+        (and-gate a1 a1 d) 
+        (and-gate a2 a2 e) 
+        (inverter d f) 
+        (inverter e g) 
+        (and-gate f g c) 
+        (inverter c output) 
+        'ok))
+
+; 3.30
+(define (ripple-carry-adder A B S c)
+    (if (null? S)
+        'ok
+        ((full-adder (car A) (car B) c (car S) c)
+    (ripple-carry-adder (cdr A) (cdr B) (cdr S) c))))
 
 (define (after-delay delay action)
     (add-to-agenda!
