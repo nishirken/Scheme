@@ -45,3 +45,37 @@
 
 (stream-ref y 3)
 ; (print sum)
+
+; Infinite streams
+(define (add-streams s1 s2)
+    (stream-map + s1 s2))
+
+(define ones (cons-stream 1 ones))
+(define integers (cons-stream 1 (add-streams ones integers)))
+
+(define fibs
+    (cons-stream 0
+        (cons-stream 1
+            (add-streams (stream-cdr fibs) fibs))))
+
+(define (scale-stream stream factor)
+    (stream-map (lambda (x) (* x factor)) stream))
+
+; 3.53
+(define s (cons-stream 1 (add-streams s s)))
+; (1 2 4 8 16)...
+; (print (stream-ref s 3)) ; 8
+
+; 3.54
+(define (mul-streams s1 s2)
+    (stream-map * s1 s2))
+
+(define factorials (cons-stream 1 (mul-streams factorials integers)))
+; (print (stream-ref factorials 6))
+    
+; 3.55
+(define (partial-sums s)
+    (add-streams s (cons-stream 0 (partial-sums s))))
+
+(define x (partial-sums integers))
+(print (stream-ref x 5))
