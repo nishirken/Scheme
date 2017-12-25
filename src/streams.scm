@@ -1,4 +1,11 @@
 (load "utils/print.scm")
+(load "divisions.scm")
+
+(define (display-line x)
+    (begin (display x) (newline)))
+
+(define (print-stream s)
+    (stream-for-each display-line s))
 
 (define (stream-enumerate-interval low high)
     (if (> low high)
@@ -78,4 +85,24 @@
     (add-streams s (cons-stream 0 (partial-sums s))))
 
 (define x (partial-sums integers))
-(print (stream-ref x 5))
+; (print (stream-ref x 5))
+
+; 3.56
+(define (merge s1 s2)
+    (cond
+        ((stream-null? s1) s2)
+        ((stream-null? s2) s1)
+        (else
+            (let ((s1car (stream-car s1)) (s2car (stream-car s2)))
+                (cond
+                    ((< s1car s2car)
+                        (cons-stream s1car (merge (stream-cdr s1) s2)))
+                    ((> s1car s2car)
+                        (cons-stream s2car (merge s1 (stream-cdr s2))))
+                    (else
+                        (cons-stream s1car (merge (stream-cdr s1) (stream-cdr s2)))))))))
+
+(define S (cons-stream 1
+    (merge (scale-stream S 2) (merge (scale-stream S 2) (scale-stream S 2)))))
+
+; (print (stream-ref S 16))
