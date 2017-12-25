@@ -145,3 +145,13 @@
             (mul-series (stream-cdr s) (invert-unit-series s)))))
 
 ; (print (mul-streams (invert-unit-series sine-series) sine-series))
+
+; 3.62
+(define (dif-series s1 s2)
+    (let ((c (stream-car s2)))
+        (if (zero? c)
+            (error "Can't divide on zero")
+            (scale-stream
+                (mul-series s1 (invert-unit-series (scale-stream s2 (/ 1 c)))) (/ 1 c)))))
+
+; (print (dif-series sine-series cosine-series))
