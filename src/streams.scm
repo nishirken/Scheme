@@ -106,3 +106,42 @@
     (merge (scale-stream S 2) (merge (scale-stream S 2) (scale-stream S 2)))))
 
 ; (print (stream-ref S 16))
+
+; 3.57
+(define (expand num den radix)
+    (cons-stream
+        (quotient (* num radix) den)
+        (expand (remainder (* num radix) den) den radix)))
+
+(expand 1 7 10) ; (1 . (promise (expand 3 7 10)))
+(expand 3 8 10) ; (3 . (promise (expand 6 7 10)))
+
+; 3.59
+(define (integrate-series stream)
+    (stream-map / stream integers))
+
+(define exp-series
+    (cons-stream 1 (integrate-series exp-series)))
+
+(define cosine-series
+    (cons-stream 1 (integrate-series (scale-stream sine-series -1))))
+
+(define sine-series
+    (cons-stream 0 (integrate-series cosine-series)))
+
+; 3.60
+(define (mul-series s1 s2)
+    (mul-streams s1 s2))
+
+(define (square-series s)
+    (mul-series s s))
+
+; (print (add-streams (square-series cosine-series) (square-series sine-series)))
+
+; 3.61
+(define (invert-unit-series s)
+    (cons-stream 1
+        (stream-map - ones
+            (mul-series (stream-cdr s) (invert-unit-series s)))))
+
+; (print (mul-streams (invert-unit-series sine-series) sine-series))
