@@ -149,21 +149,23 @@
 ; (print (mul-streams (invert-unit-series sine-series) sine-series))
 
 ; 3.62
-(define (dif-series s1 s2)
+(define (div-series s1 s2)
     (let ((c (stream-car s2)))
         (if (zero? c)
             (error "Can't divide on zero")
             (scale-stream
                 (mul-series s1 (invert-unit-series (scale-stream s2 (/ 1 c)))) (/ 1 c)))))
 
-; (print (dif-series sine-series cosine-series))
+; (print (div-series sine-series cosine-series))
 
 (define (euler-transform s)
     (let
         ((s0 (stream-ref s 0))
         (s1 (stream-ref s 1))
         (s2 (stream-ref s 2)))
-        (cons-stream (- s2 (/ (euler-transform (stream-cdr s)))))
+        (cons-stream
+            (- s2 (/ (square (- s2 s1)) (+ s0 (* -2 s1) s2)))
+            (euler-transform (stream-cdr s)))))
 
 (define (make-tableau transform s)
     (cons-stream s (make-tableau transform (transform s))))
@@ -188,7 +190,7 @@
         (s1 (stream-ref s 1)))
         (if (good-enough? s0 s1 tolerance)
             s1
-            (stream-limit (stream-cdr (stream-cdr s)) tolerance))))
+            (stream-limit (stream-cdr s) tolerance))))
 
 (define (sqrt-s x tolerance)
     (stream-limit (sqrt-stream x) tolerance))
@@ -198,3 +200,14 @@
 ; (print (sqrt-s 4 0.1))
 
 ; 3.65
+(define (logo-summands n)
+    (cons-stream (/ 1.0 n)
+        (stream-map - (logo-summands (inc n)))))
+
+(define logo-stream
+    (partial-sums (logo-summands 1)))
+
+(define accelerated-logo-stream
+    (accelerated-sequence euler-transform logo-stream))
+
+(print (stream-limit accelerated-logo-stream 0.0001))
