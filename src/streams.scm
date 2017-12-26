@@ -1,5 +1,7 @@
 (load "utils/print.scm")
 (load "divisions.scm")
+(load "utils/maths.scm")
+(load "sqrtIter.scm")
 
 (define (display-line x)
     (begin (display x) (newline)))
@@ -155,3 +157,29 @@
                 (mul-series s1 (invert-unit-series (scale-stream s2 (/ 1 c)))) (/ 1 c)))))
 
 ; (print (dif-series sine-series cosine-series))
+
+; 3.63
+(define (sqrt-stream x)
+    (define guesses
+        (cons-stream 1.0
+            (stream-map (lambda (guess) (improve guess x)) guesses)))
+    guesses)
+
+; 3.64
+(define (good-enough? prev-guess guess tolerance)
+    (< (abs (- prev-guess guess)) tolerance))
+
+(define (stream-limit s tolerance)
+    (let
+        ((s0 (stream-ref s 0))
+        (s1 (stream-ref s 1)))
+        (if (good-enough? s0 s1 tolerance)
+            s1
+            (stream-limit (stream-cdr (stream-cdr s)) tolerance))))
+
+(define (sqrt-s x tolerance)
+    (stream-limit (sqrt-stream x) tolerance))
+
+; (print (sqrt-s 9 0.1))
+; (print (sqrt-s 81 0.1))
+; (print (sqrt-s 4 0.1))
