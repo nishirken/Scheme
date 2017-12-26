@@ -158,6 +158,19 @@
 
 ; (print (dif-series sine-series cosine-series))
 
+(define (euler-transform s)
+    (let
+        ((s0 (stream-ref s 0))
+        (s1 (stream-ref s 1))
+        (s2 (stream-ref s 2)))
+        (cons-stream (- s2 (/ (euler-transform (stream-cdr s)))))
+
+(define (make-tableau transform s)
+    (cons-stream s (make-tableau transform (transform s))))
+
+(define (accelerated-sequence transform s)
+    (stream-map stream-car (make-tableau transform s)))
+
 ; 3.63
 (define (sqrt-stream x)
     (define guesses
@@ -183,3 +196,5 @@
 ; (print (sqrt-s 9 0.1))
 ; (print (sqrt-s 81 0.1))
 ; (print (sqrt-s 4 0.1))
+
+; 3.65
